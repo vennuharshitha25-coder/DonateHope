@@ -9,6 +9,7 @@ import DashboardDonor from './pages/DashboardDonor';
 import DashboardOrg from './pages/DashboardOrg';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from "./pages/ForgotPassword";
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
@@ -39,6 +40,16 @@ function App() {
             </div>
           </ProtectedRoute>
         );
+        case 'admin-dash':
+  return (
+    <ProtectedRoute allowedRoles={['admin']}>
+      <div className="flex pt-16 min-h-screen bg-gray-50/50">
+        <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
+          <AdminDashboard />
+        </main>
+      </div>
+    </ProtectedRoute>
+  );
       default: return <LandingPage onNavigate={setCurrentPage} />;
     }
   };

@@ -16,13 +16,21 @@ const Login = ({ onNavigate }) => {
       });
       const data = await res.json();
       if (res.ok) {
-        setToken(data.token);
-        setUser(data.user);
-        localStorage.setItem('role', data.user.role);
-        onNavigate(data.user.role === 'organization' ? 'org-dash' : 'donor-dash');
-      } else {
-        alert(data.message);
-      }
+  setToken(data.token);
+  setUser(data.user);
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("role", data.user.role);
+
+  if (data.user.role === "admin") {
+    onNavigate("admin-dash");
+  } else if (data.user.role === "organization") {
+    onNavigate("org-dash");
+  } else {
+    onNavigate("donor-dash");
+  }
+} else {
+  alert(data.message);
+}
     } catch (err) {
       console.error(err);
     }
