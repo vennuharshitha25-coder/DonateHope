@@ -105,18 +105,13 @@ const OrganizationDetails = ({ organization, setPage, setSelectedOrganization })
 
         <div className="flex gap-4 flex-wrap">
 
-          <a
-            href={`tel:${organization.phone}`}
-            className="bg-green-600 text-white px-6 py-3 rounded-xl"
-          >
-            📞 Call Organization
-          </a>
 
          <button
   onClick={() => {
   setSelectedOrganization(organization);
   setPage("food");
 }}
+className="bg-green-600 text-white px-6 py-3 rounded-xl"
 >
   Donate Food
 </button>
@@ -126,13 +121,14 @@ const OrganizationDetails = ({ organization, setPage, setSelectedOrganization })
   setSelectedOrganization(organization);
   setPage("money");
 }}
+className="bg-green-600 text-white px-6 py-3 rounded-xl"
 >
   Donate Money
 </button>
 
           <button
             onClick={() => setPage("dashboard")}
-            className="bg-gray-500 text-white px-6 py-3 rounded-xl"
+            className="bg-black text-white px-6 py-3 rounded-xl"
           >
             Back
           </button>

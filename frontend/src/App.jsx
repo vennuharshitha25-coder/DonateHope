@@ -8,7 +8,7 @@ import RegisterOrg from './pages/RegisterOrg';
 import DashboardDonor from './pages/DashboardDonor';
 import DashboardOrg from './pages/DashboardOrg';
 import ProtectedRoute from './components/ProtectedRoute';
-import ForgotPassword from "./pages/ForgotPassword";
+
 import AdminDashboard from './pages/AdminDashboard';
 import PaymentPage from './pages/PaymentPage';
 
@@ -23,7 +23,6 @@ function App() {
       case 'login': return <Login onNavigate={setCurrentPage} />;
       case 'reg-donor': return <RegisterDonor onNavigate={setCurrentPage} />;
       case 'reg-org': return <RegisterOrg onNavigate={setCurrentPage} />;
-      case "forgot-password": return <ForgotPassword onNavigate={setCurrentPage} />;
       case 'payment': return <PaymentPage />;
       case 'donor-dash':
         return (

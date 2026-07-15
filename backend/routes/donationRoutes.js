@@ -1,10 +1,31 @@
-import express from 'express';
-import { createDonation, getOrgDonations, updateDonationStatus } from '../controllers/donationController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import express from "express";
+import upload from "../middleware/upload.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
+import {
+  createDonation,
+  getPendingDonations,
+  getOrgDonations,
+  updateDonationStatus,
+} from "../controllers/donationController.js";
+
 const router = express.Router();
 
-router.post('/', protect, createDonation);
-router.get('/org', protect, getOrgDonations);
-router.put('/:id', protect, updateDonationStatus);
+// routes...
+
+// Donor submits donation
+router.post(
+  "/",
+  protect,
+  upload.array("photos", 5),
+  createDonation
+);
+
+// Admin gets pending donations
+router.get(
+  "/admin",
+  protect,
+  adminOnly,
+  getPendingDonations
+);
 
 export default router;

@@ -6,14 +6,56 @@ const AdminDashboard = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [payment, setPayment] = useState(null);
-
+  const [complaints, setComplaints] =
+  useState([]);
+  const [donations,setDonations]=useState([]);
 
 const [selectedOrgId, setSelectedOrgId] = useState("");
 
 const [priority, setPriority] = useState("High");
+  const fetchComplaints = async () => {
+  try {
+    const res = await fetch(
+      "http://localhost:5001/api/complaints"
+    );
+
+    const data = await res.json();
+
+    setComplaints(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+const fetchDonations = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+      "http://localhost:5001/api/donations/admin",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      setDonations(data);
+    } else {
+      console.log(data);
+      setDonations([]);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
   useEffect(() => {
     fetchPendingOrganizations();
-
+    fetchComplaints();
+    fetchDonations();
+    
     const paymentData =
       JSON.parse(
         localStorage.getItem("paymentProof")
@@ -69,27 +111,6 @@ const [priority, setPriority] = useState("High");
     console.log(err);
   }
 };
-
-  const approveOrganization = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-      await fetch(
-      `http://localhost:5001/api/admin/approve/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    alert("Organization Approved");
-
-    fetchPendingOrganizations();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
 
   const rejectOrganization = async (id) => {
@@ -288,36 +309,38 @@ Submit
           <div className="flex gap-4 mt-6">
 
             <button
-              onClick={() => {
-                payment.status = "Approved";
+            onClick={() => {
+              const updatedPayment = {
+                ...payment,
+                status: "Approved",
+              };
 
-                localStorage.setItem(
-                  "paymentProof",
-                  JSON.stringify(payment)
-                );
+              localStorage.setItem(
+                "paymentProof",
+                JSON.stringify(updatedPayment)
+              );
 
-                setPayment({ ...payment });
-                alert("Payment Approved Successfully");
-              }}
-              className="bg-green-600 text-white px-6 py-2 rounded-xl">
-                Approve
-            </button>
+              setPayment(updatedPayment);
+
+              alert("Payment Approved Successfully");
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl"
+          >
+            Approve
+          </button>
 
             <button
-              onClick={() => {
-                payment.status = "Rejected";
+            onClick={() => {
+              localStorage.removeItem("paymentProof");
 
-                localStorage.setItem(
-                  "paymentProof",
-                  JSON.stringify(payment)
-                );
+              setPayment(null);
 
-                setPayment({ ...payment });
-                alert("Payment Rejected");
-              }}
-              className="bg-red-500 text-white px-6 py-2 rounded-xl">
-                Reject
-            </button>
+              alert("Payment Rejected Successfully");
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl"
+          >
+            Reject
+          </button>
         </div>
       </div>
       ) : (
@@ -325,6 +348,158 @@ Submit
             No payment proofs submitted.
           </div>
         )}
+        <h2 className="text-3xl font-bold mt-12 mb-5">
+  Food Donation Requests
+</h2>
+
+{donations.length === 0 ? (
+  <div className="bg-white rounded-2xl p-6 shadow">
+    No pending food donations.
+  </div>
+) : (
+  donations.map((item) => (
+    <div
+      key={item._id}
+      className="bg-white rounded-2xl shadow p-6 mb-6"
+    >
+      <h3 className="text-2xl font-bold text-green-700">
+  {item.foodName}
+</h3>
+{/* <p>
+  <b>Donor Name:</b> {item.donor?.name}
+</p>
+
+<p>
+  <b>Organization:</b> {item.organization?.name || "Any Organization"}
+</p> */}
+
+<p className="mt-2">
+  <b>Category:</b> {item.category}
+</p>
+
+<p>
+  <b>Quantity:</b> {item.quantity}
+</p>
+
+
+
+<p>
+  <b>Occasion:</b> {item.occasion || "N/A"}
+</p>
+
+<p>
+  <b>Instructions:</b> {item.instructions || "No instructions"}
+</p>
+
+<p>
+  <b>Status:</b> {item.status}
+</p>
+
+      <img
+        src={`http://localhost:5001/uploads/${item.photos[0]}`}
+        alt=""
+        className="w-64 rounded-xl mt-4"
+      />
+
+      <div className="flex gap-4 mt-5">
+        <button className="bg-green-600 text-white px-5 py-2 rounded-xl">
+          Verify
+        </button>
+
+        <button className="bg-red-500 text-white px-5 py-2 rounded-xl">
+          Reject
+        </button>
+      </div>
+    </div>
+  ))
+)}
+        <h2 className="text-2xl font-semibold  mt-12 mb-5 text-black">
+User Complaints
+</h2>
+
+{complaints.map((item) => (
+
+<div
+key={item._id}
+className="bg-white rounded-2xl shadow p-6 mb-5 border "
+>
+
+<h3 className="text-xl font-bold">
+{item.name}
+</h3>
+
+<p>{item.email}</p>
+
+<p className="mt-3">
+{item.complaint}
+</p>
+
+<p className="mt-3">
+Status :
+<b>
+{item.status}
+</b>
+</p>
+
+<div className="flex gap-4 mt-5">
+
+<button
+
+onClick={async()=>{
+
+await fetch(
+`http://localhost:5001/api/complaints/accept/${item._id}`,
+{
+method:"PUT",
+}
+);
+
+alert(
+"Complaint Received. We will take necessary action."
+);
+
+fetchComplaints();
+
+}}
+
+className="bg-green-600 text-white px-5 py-2 rounded-xl"
+>
+
+Accept
+
+</button>
+
+<button
+
+onClick={async()=>{
+
+await fetch(
+`http://localhost:5001/api/complaints/reject/${item._id}`,
+{
+method:"PUT",
+}
+);
+
+alert(
+"Complaint Rejected."
+);
+
+fetchComplaints();
+
+}}
+
+className="bg-red-500 text-white px-5 py-2 rounded-xl"
+>
+
+Reject
+
+</button>
+
+</div>
+
+</div>
+
+))}
     </div>
   );
 };

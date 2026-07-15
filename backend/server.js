@@ -7,6 +7,7 @@ import donationRoutes from './routes/donationRoutes.js';
 import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import complaintRoutes from "./routes/complaintRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -19,9 +20,12 @@ app.use(
   "/uploads",
   express.static("uploads")
 );
-
+app.use(
+  "/api/complaints",
+  complaintRoutes
+);
+app.use("/api/donations", donationRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/donations', donationRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);

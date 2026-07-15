@@ -10,13 +10,22 @@ const DonateMoney = ({ setPage, selectedOrganization }) => {
   });
 
   useEffect(() => {
-    if (selectedOrganization) {
-      setFormData((prev) => ({
-        ...prev,
-        organization: selectedOrganization.name,
-      }));
-    }
-  }, [selectedOrganization]);
+  fetchOrganizations();
+}, []);
+
+const fetchOrganizations = async () => {
+  try {
+    const res = await fetch(
+      "http://localhost:5001/api/users/organizations"
+    );
+
+    const data = await res.json();
+
+    setOrganizations(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -107,18 +116,14 @@ const DonateMoney = ({ setPage, selectedOrganization }) => {
       Any Organization (Highest Priority)
     </option>
 
-    <option>
-      Hope Orphanage
-    </option>
-
-    <option>
-      Care Foundation
-    </option>
-
-    <option>
-      Happy Old Age Home
-    </option>
-
+    {organizations.map((org) => (
+  <option
+    key={org._id}
+    value={org.name}
+  >
+    {org.name}
+  </option>
+))}
   </select>
 
 )}

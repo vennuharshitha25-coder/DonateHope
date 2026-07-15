@@ -1,7 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { sendWelcomeEmail } from '../utils/sendEmail.js';
+
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
@@ -26,7 +26,14 @@ export const registerUser = async (req, res) => {
   } = req.body;
 
   try {
-    const exists = await User.findOne({ email });
+    console.log("Received Email:", email);
+    console.log("Received Phone:", phone);
+    console.log("Received Body:", req.body);
+    console.log("Searching email:", email);
+
+const exists = await User.findOne({ email });
+
+console.log("Found user:", exists);
 
     if (exists)
       return res.status(400).json({

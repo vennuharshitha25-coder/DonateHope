@@ -5,7 +5,10 @@ import Login from '../pages/Login';
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { token, user } = useContext(AuthContext);
 
-  if (!token) return <Login />;
+if (!token) {
+  onNavigate("login");
+  return null;
+}
   if (allowedRoles && user && !allowedRoles.includes(user.role)) {
     return <div className="p-8 text-center text-red-500 font-bold">403 - Unauthorised View Access</div>;
   }

@@ -3,6 +3,7 @@ import { useState ,useEffect} from "react";
 const DonateFood = ({setPage, selectedOrganization}) => {
   const [photos, setPhotos] = useState([]);
 const [previewImages, setPreviewImages] = useState([]);
+const [organizations, setOrganizations] = useState([]);
   const [formData, setFormData] = useState({
     foodName: "",
     category: "",
@@ -16,13 +17,31 @@ const [previewImages, setPreviewImages] = useState([]);
     photos: [],
   });
   useEffect(() => {
+  fetchOrganizations();
+}, []);
+
+const fetchOrganizations = async () => {
+  try {
+    const res = await fetch(
+      "http://localhost:5001/api/users/organizations"
+    );
+
+    const data = await res.json();
+
+    setOrganizations(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+useEffect(() => {
   if (selectedOrganization) {
     setFormData((prev) => ({
       ...prev,
-      organization: selectedOrganization.name,
+      organization: selectedOrganization._id,
     }));
   }
 }, [selectedOrganization]);
+
   const handlePhotos = (e) => {
   const files = Array.from(e.target.files);
 
@@ -48,10 +67,34 @@ const [previewImages, setPreviewImages] = useState([]);
   setPreviewImages((prev) => [...prev, ...newPreviews]);
 };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    console.log(formData);
+    const form = new FormData();
+
+form.append("foodName",formData.foodName);
+form.append("category",formData.category);
+form.append("quantity",formData.quantity);
+form.append("organization",formData.organization);
+form.append("deliveryMethod", formData.deliveryMethod);
+form.append("occasion", formData.occasion);
+form.append("instructions", formData.instructions);
+
+formData.photos.forEach(photo=>{
+    form.append("photos",photo);
+});
+
+await fetch("http://localhost:5001/api/donations",{
+
+method:"POST",
+
+headers:{
+Authorization:`Bearer ${localStorage.getItem("token")}`
+},
+
+body:form
+
+});
 
     alert("Food Donation Submitted Successfully!");
   };
@@ -134,36 +177,8 @@ const [previewImages, setPreviewImages] = useState([]);
 
         </div>
 
-        {/* Preparation + Expiry */}
 
-        <div className="grid md:grid-cols-2 gap-5">
-
-          <input
-            type="datetime-local"
-            required
-           
-            className="w-full px-4 py-3 rounded-xl border"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                preparationTime: e.target.value,
-              })
-            }
-          />
-
-          <input
-            type="datetime-local"
-            required
-            className="w-full px-4 py-3 rounded-xl border"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                expiryTime: e.target.value,
-              })
-            }
-          />
-
-        </div>
+        
 
         {/* Delivery */}
 
@@ -207,13 +222,19 @@ const [previewImages, setPreviewImages] = useState([]);
 
         
 {selectedOrganization ? (
-
+  <div>
   <input
-    type="text"
-    value={selectedOrganization.name}
-    readOnly
-    className="w-full px-4 py-3 rounded-xl border bg-gray-100"
-  />
+  type="text"
+  value={selectedOrganization.name}
+  readOnly
+  className="w-full px-4 py-3 rounded-xl border bg-gray-100"
+/>
+
+<input
+  type="hidden"
+  value={selectedOrganization._id}
+/>
+</div>
 
 ) : (
 
@@ -231,11 +252,14 @@ const [previewImages, setPreviewImages] = useState([]);
 
     <option>Any Organization (Highest Priority)</option>
 
-    <option>Hope Orphanage</option>
-
-    <option>Care Foundation</option>
-
-    <option>Happy Old Age Home</option>
+    {organizations.map((org) => (
+  <option
+  key={org._id}
+  value={org._id}
+>
+  {org.name}
+</option>
+))}
 
   </select>
 

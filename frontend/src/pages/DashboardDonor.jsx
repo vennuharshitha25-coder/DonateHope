@@ -37,6 +37,30 @@ const fetchOrganizations = async () => {
     console.log(err);
   }
 };
+const filteredOrganizations = [...organizations]
+  .filter((org) =>
+    org.name.toLowerCase().includes(search.toLowerCase())
+  )
+  .sort((a, b) => {
+    if (sortBy === "priority") {
+      const priorityOrder = {
+        High: 1,
+        Medium: 2,
+        Low: 3,
+      };
+
+      return (
+        priorityOrder[a.priority] -
+        priorityOrder[b.priority]
+      );
+    }
+
+    if (sortBy === "location") {
+      return a.city.localeCompare(b.city);
+    }
+
+    return 0;
+  });
 return(
 
 <div className="flex bg-gray-50">
@@ -81,22 +105,27 @@ setPage={setPage}
     <div className="grid md:grid-cols-3 gap-4 ">
 
       <input
-type="text"
-placeholder="🔍 Search organization"
-value={search}
-onChange={(e)=>setSearch(e.target.value)}
-className="border rounded-xl px-4 py-3 sm:col-span-2 focus:ring-2 focus:ring-green-500 outline-none"
+  type="text"
+  placeholder="🔍 Search Organization"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="border rounded-xl px-4 py-3 sm:col-span-2 focus:ring-2 focus:ring-green-500 outline-none"
 />
 
       
 
       <select
-value={sortBy}
-onChange={(e)=>setSortBy(e.target.value)}
-className="border rounded-xl px-4 py-3"
+  value={sortBy}
+  onChange={(e) => setSortBy(e.target.value)}
+  className="border rounded-xl px-4 py-3"
 >
-<option value="priority">Highest Priority</option>
-<option value="location">Location Wise</option>
+  <option value="priority">
+    Highest Priority
+  </option>
+
+  <option value="location">
+    Location Wise
+  </option>
 </select>
 
     </div>
@@ -107,21 +136,10 @@ className="border rounded-xl px-4 py-3"
 
 <div>
 
-  <div className="flex justify-between items-center mb-6">
-
-    <h2 className="text-3xl font-bold text-gray-800">
-      🏢 Registered Organizations
-    </h2>
-
-    <button className="text-green-600 font-semibold hover:underline">
-      View All →
-    </button>
-
-  </div>
 
   <div className="grid lg:grid-cols-2 gap-6">
 
-      {organizations.map((org) => (
+      {filteredOrganizations.map((org) => (
 
   <div
     key={org._id}
@@ -140,9 +158,26 @@ className="border rounded-xl px-4 py-3"
 
     <div className="p-6">
 
-      <h3 className="text-2xl font-bold">
-        {org.name}
-      </h3>
+      <div className="flex justify-between items-start">
+
+  <h3 className="text-2xl font-bold">
+    {org.name}
+  </h3>
+
+  <span
+    className={`px-3 py-1 rounded-full text-sm font-bold text-white
+      ${
+        org.priority === "High"
+          ? "bg-red-500"
+          : org.priority === "Medium"
+          ? "bg-yellow-500"
+          : "bg-green-500"
+      }`}
+  >
+    {org.priority}
+  </span>
+
+</div>
 
       <p className="text-gray-500 mt-3">
         📍 {org.city}

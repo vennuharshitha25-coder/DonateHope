@@ -39,7 +39,11 @@ photos: {
   default: [],
 },
 
-
+priority: {
+  type: String,
+  enum: ["High", "Medium", "Low"],
+  default: "Low",
+},
 
   // 👇 ADD THIS HERE
   approvalStatus: {
@@ -50,11 +54,6 @@ photos: {
         ? 'Pending'
         : 'Approved';
     }
-  },
-  priority: {
-  type: String,
-  enum: ["High", "Medium", "Low"],
-  default: "Medium",
 },
 
   isAvailable: {

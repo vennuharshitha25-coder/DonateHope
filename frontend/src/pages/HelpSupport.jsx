@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import {
   HelpCircle,
   Phone,
@@ -13,17 +15,36 @@ const HelpSupport = () => {
     subject: "",
     description: "",
   });
+  const { user } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  await fetch(
+    "http://localhost:5001/api/complaints",
+    {
+      method: "POST",
 
-    alert("Your complaint has been submitted successfully.");
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    setComplaint({
-      subject: "",
-      description: "",
-    });
-  };
+      body: JSON.stringify({
+  name: user.name,
+  email: user.email,
+  complaint: complaint.subject + "\n\n" + complaint.description,
+}),
+    }
+  );
+
+  alert(
+    "Complaint Submitted Successfully."
+  );
+
+  setComplaint({
+  subject: "",
+  description: "",
+});
+};
 
   return (
     <div className="space-y-8">
