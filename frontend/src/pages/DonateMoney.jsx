@@ -1,24 +1,23 @@
 import { useState } from "react";
 
 const DonateMoney = ({ setPage }) => {
-  // const [formData, setFormData] = useState({
-  //   amount: "",
-  //   organization: "",
-  //   purpose: "Support Both",
-  //   paymentMethod: "",
-  //   message: "",
-  // });
+  const [formData, setFormData] = useState({
+    amount: "",
+    organization: "",
+    purpose: "Support Both",
+    paymentMethod: "",
+    message: "",
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+      e.preventDefault();
 
-    alert("Proceeding to Payment...");
+      localStorage.setItem(
+        "donationAmount",
+        formData.amount
+      );
 
-    console.log("before navigation");
-
-    setPage("payment");
-
-    console.log("after navigation");
+      setPage("payment");
   };
 
   return (
@@ -210,19 +209,19 @@ const DonateMoney = ({ setPage }) => {
             }
           >
 
-            <option value="">
+            {/* <option value="">
               Select Payment Method
-            </option>
+            </option> */}
 
             <option>UPI</option>
 
-            <option>Credit Card</option>
+            {/* <option>Credit Card</option>
 
             <option>Debit Card</option>
 
             <option>Net Banking</option>
 
-            <option>Wallet</option>
+            <option>Wallet</option> */}
 
           </select>
 
