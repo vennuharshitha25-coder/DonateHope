@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DonorSidebar from "../components/DonorSidebar";
 
@@ -10,7 +10,24 @@ import HelpSupport from "./HelpSupport";
 const DashboardDonor = () => {
 
 const [page,setPage]=useState("dashboard");
+const [organizations, setOrganizations] = useState([]);
+useEffect(() => {
+  fetchOrganizations();
+}, []);
 
+const fetchOrganizations = async () => {
+  try {
+    const res = await fetch(
+      "http://localhost:5001/api/users/organizations"
+    );
+
+    const data = await res.json();
+
+    setOrganizations(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
 return(
 
 <div className="flex bg-gray-50">
@@ -112,248 +129,60 @@ setPage={setPage}
 
   <div className="grid lg:grid-cols-2 gap-6">
 
-    {/* Card 1 */}
+      {organizations.map((org) => (
 
-    <div className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+  <div
+    key={org._id}
+    className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden"
+  >
 
-      <img
-        src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900"
-        alt="Hope Orphanage"
-        className="w-full h-56 object-cover"
-      />
+    <img
+      src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900"
+      alt={org.name}
+      className="w-full h-56 object-cover"
+    />
 
-      <div className="p-6">
+    <div className="p-6">
 
-        <div className="flex justify-between items-center">
+      <h3 className="text-2xl font-bold">
+        {org.name}
+      </h3>
 
-          <h3 className="text-2xl font-bold">
-            Hope Orphanage
-          </h3>
+      <p className="text-gray-500 mt-3">
+        📍 {org.city}
+      </p>
 
-          <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-            High Priority
-          </span>
+      <p className="text-gray-500 mt-2">
+        🏷 {org.orgType}
+      </p>
 
-        </div>
+      <p className="text-gray-600 mt-4">
+        {org.description}
+      </p>
 
-        <p className="text-gray-500 mt-3">
-          📍 Hyderabad
-        </p>
+      <div className="flex justify-between items-center mt-6">
 
-        <p className="text-gray-500 mt-2">
-          🏷 Orphanage
-        </p>
+        <span className="text-green-600 font-semibold">
+          ● Accepting Donations
+        </span>
 
-        <p className="text-gray-600 mt-4">
-          Providing food, education and shelter for over
-          <span className="font-semibold text-green-600">
-            {" "}120 children.
-          </span>
-        </p>
-
-        <div className="flex justify-between items-center mt-6">
-
-          <div>
-
-            <p className="text-sm text-gray-500">
-              Status
-            </p>
-
-            <span className="text-green-600 font-semibold">
-              ● Accepting Donations
-            </span>
-
-          </div>
-
-          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
-            View Details
-          </button>
-
-        </div>
+        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
+          View Details
+        </button>
 
       </div>
 
     </div>
 
-    {/* Card 2 */}
+  </div>
 
-    <div className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+))}
 
-      <img
-        src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900"
-        alt="Care Foundation"
-        className="w-full h-56 object-cover"
-      />
+        
 
-      <div className="p-6">
+        
 
-        <div className="flex justify-between items-center">
-
-          <h3 className="text-2xl font-bold">
-            Care Foundation
-          </h3>
-
-          <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
-            Medium Priority
-          </span>
-
-        </div>
-
-        <p className="text-gray-500 mt-3">
-          📍 Secunderabad
-        </p>
-
-        <p className="text-gray-500 mt-2">
-          🏷 NGO
-        </p>
-
-        <p className="text-gray-600 mt-4">
-          Helping homeless families with daily meals and emergency food support.
-        </p>
-
-        <div className="flex justify-between items-center mt-6">
-
-          <div>
-
-            <p className="text-sm text-gray-500">
-              Status
-            </p>
-
-            <span className="text-green-600 font-semibold">
-              ● Available
-            </span>
-
-          </div>
-
-          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
-            View Details
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    {/* Card 3 */}
-
-    <div className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
-
-      <img
-        src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900"
-        alt="Happy Old Age Home"
-        className="w-full h-56 object-cover"
-      />
-
-      <div className="p-6">
-
-        <div className="flex justify-between items-center">
-
-          <h3 className="text-2xl font-bold">
-            Happy Old Age Home
-          </h3>
-
-          <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-            Low Priority
-          </span>
-
-        </div>
-
-        <p className="text-gray-500 mt-3">
-          📍 Warangal
-        </p>
-
-        <p className="text-gray-500 mt-2">
-          🏷 Old Age Home
-        </p>
-
-        <p className="text-gray-600 mt-4">
-          Caring for 75 senior citizens with nutritious daily meals.
-        </p>
-
-        <div className="flex justify-between items-center mt-6">
-
-          <div>
-
-            <p className="text-sm text-gray-500">
-              Status
-            </p>
-
-            <span className="text-green-600 font-semibold">
-              ● Accepting Donations
-            </span>
-
-          </div>
-
-          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
-            View Details
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    {/* Card 4 */}
-
-    <div className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
-
-      <img
-        src="https://images.unsplash.com/photo-1469571486292-b53601020f1c?w=900"
-        alt="Smile Foundation"
-        className="w-full h-56 object-cover"
-      />
-
-      <div className="p-6">
-
-        <div className="flex justify-between items-center">
-
-          <h3 className="text-2xl font-bold">
-            Smile Foundation
-          </h3>
-
-          <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-            High Priority
-          </span>
-
-        </div>
-
-        <p className="text-gray-500 mt-3">
-          📍 Vijayawada
-        </p>
-
-        <p className="text-gray-500 mt-2">
-          🏷 NGO
-        </p>
-
-        <p className="text-gray-600 mt-4">
-          Providing meals for underprivileged children and families every day.
-        </p>
-
-        <div className="flex justify-between items-center mt-6">
-
-          <div>
-
-            <p className="text-sm text-gray-500">
-              Status
-            </p>
-
-            <span className="text-green-600 font-semibold">
-              ● Available
-            </span>
-
-          </div>
-
-          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
-            View Details
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
+      
 
   </div>
 

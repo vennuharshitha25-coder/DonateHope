@@ -28,6 +28,7 @@ const res = await fetch(
 
   const approveOrganization = async (id) => {
     try {
+      const token = localStorage.getItem("token");
       await fetch(
   `http://localhost:5001/api/admin/approve/${id}`,
   {
@@ -48,6 +49,7 @@ const res = await fetch(
 
   const rejectOrganization = async (id) => {
     try {
+      const token = localStorage.getItem("token");
       await fetch(
   `http://localhost:5001/api/admin/reject/${id}`,
   {

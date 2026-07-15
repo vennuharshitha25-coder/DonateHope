@@ -76,7 +76,7 @@ const Login = ({ onNavigate }) => {
               </button>
             </div>
 
-            <div className="flex justify-end mt-2">
+            {/* <div className="flex justify-end mt-2">
               <button
                 type="button"
                 onClick={() => onNavigate("forgot-password")}
@@ -84,7 +84,7 @@ const Login = ({ onNavigate }) => {
               >
                 Forgot Password?
               </button>
-            </div>
+            </div> */}
           </div>
           <button type="submit" className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold shadow-md hover:bg-brand-dark transition-all text-sm">
             Sign In

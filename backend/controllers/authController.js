@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
 export const registerUser = async (req, res) => {
+   console.log("BODY:", req.body);
+  console.log("PASSWORD:", req.body.password);
   const {
     name,
     email,
@@ -29,7 +31,11 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({
         message: "User already exists",
       });
-
+      console.log(req.body);
+console.log("Password:", password);
+console.log("BODY:", req.body);
+console.log("FILES:", req.files);
+console.log("PASSWORD:", req.body.password);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -107,9 +113,25 @@ export const loginUser = async (req, res) => {
     }
 
     res.json({
-      token: generateToken(user._id),
-      user,
-    });
+  token: generateToken(user._id),
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    Altphone: user.Altphone,
+    role: user.role,
+    orgType: user.orgType,
+    contactPerson: user.contactPerson,
+    designation: user.designation,
+    address: user.address,
+    city: user.city,
+    gender: user.gender,
+    occupation: user.occupation,
+    description: user.description,
+    approvalStatus: user.approvalStatus,
+  },
+});
 
   } catch (err) {
 
