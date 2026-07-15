@@ -138,10 +138,10 @@ setPage={setPage}
   >
 
     <img
-      src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900"
-      alt={org.name}
-      className="w-full h-56 object-cover"
-    />
+  src={org.photos?.[0] || "/default-org.jpg"}
+  alt={org.name}
+  className="w-full h-56 object-cover"
+/>
 
     <div className="p-6">
 
