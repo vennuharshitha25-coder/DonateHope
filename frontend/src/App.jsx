@@ -10,6 +10,7 @@ import DashboardOrg from './pages/DashboardOrg';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from "./pages/ForgotPassword";
 import AdminDashboard from './pages/AdminDashboard';
+import PaymentPage from './pages/PaymentPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
@@ -23,6 +24,7 @@ function App() {
       case 'reg-donor': return <RegisterDonor onNavigate={setCurrentPage} />;
       case 'reg-org': return <RegisterOrg onNavigate={setCurrentPage} />;
       case "forgot-password": return <ForgotPassword onNavigate={setCurrentPage} />;
+      case 'payment': return <PaymentPage />;
       case 'donor-dash':
         return (
           <ProtectedRoute allowedRoles={['donor']}>

@@ -1,20 +1,24 @@
 import { useState } from "react";
 
-const DonateMoney = () => {
-  const [formData, setFormData] = useState({
-    amount: "",
-    organization: "",
-    purpose: "Support Both",
-    paymentMethod: "",
-    message: "",
-  });
+const DonateMoney = ({ setPage }) => {
+  // const [formData, setFormData] = useState({
+  //   amount: "",
+  //   organization: "",
+  //   purpose: "Support Both",
+  //   paymentMethod: "",
+  //   message: "",
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
     alert("Proceeding to Payment...");
+
+    console.log("before navigation");
+
+    setPage("payment");
+
+    console.log("after navigation");
   };
 
   return (
@@ -286,10 +290,9 @@ const DonateMoney = () => {
         </div>
 
         {/* Button */}
-
         <button
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-bold transition"
-        >
+          type="submit"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-bold transition">
           Proceed to Payment
         </button>
 

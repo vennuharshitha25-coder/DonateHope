@@ -6,6 +6,7 @@ import Profile from "./Profile";
 import DonateFood from "./DonateFood";
 import DonateMoney from "./DonateMoney";
 import HelpSupport from "./HelpSupport";
+import PaymentPage from "./PaymentPage";
 
 const DashboardDonor = () => {
 
@@ -197,8 +198,11 @@ setPage={setPage}
 
 {page==="food" && <DonateFood/>}
 
-{page==="money" && <DonateMoney/>}
+{page==="money" &&
+   <DonateMoney setPage={setPage}/>
+}
 {page==="support" && <HelpSupport/>}
+{page==="payment" && <PaymentPage />}
 
 </div>
 
