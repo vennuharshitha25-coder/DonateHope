@@ -8,25 +8,22 @@ const DonateMoney = ({ setPage, selectedOrganization }) => {
     paymentMethod: "",
     message: "",
   });
+
   useEffect(() => {
-  if (selectedOrganization) {
-    setFormData((prev) => ({
-      ...prev,
-      organization: selectedOrganization.name,
-    }));
-  }
-}, [selectedOrganization]);
+    if (selectedOrganization) {
+      setFormData((prev) => ({
+        ...prev,
+        organization: selectedOrganization.name,
+      }));
+    }
+  }, [selectedOrganization]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert("Proceeding to Payment...");
-
-    console.log("before navigation");
+    localStorage.setItem("donationAmount", formData.amount);
 
     setPage("payment");
-
-    console.log("after navigation");
   };
 
   return (
@@ -220,19 +217,19 @@ const DonateMoney = ({ setPage, selectedOrganization }) => {
             }
           >
 
-            <option value="">
+            {/* <option value="">
               Select Payment Method
-            </option>
+            </option> */}
 
             <option>UPI</option>
 
-            <option>Credit Card</option>
+            {/* <option>Credit Card</option>
 
             <option>Debit Card</option>
 
             <option>Net Banking</option>
 
-            <option>Wallet</option>
+            <option>Wallet</option> */}
 
           </select>
 

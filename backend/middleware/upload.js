@@ -6,16 +6,20 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
 
+
+
   filename: (req, file, cb) => {
     cb(
       null,
       Date.now() +
         "-" +
-        Math.round(Math.random() * 1e9) +
-        path.extname(file.originalname)
+        file.originalname
     );
   },
 });
+
+
+  
 
 const upload = multer({ storage });
 

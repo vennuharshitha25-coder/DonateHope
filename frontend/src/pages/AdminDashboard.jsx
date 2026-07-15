@@ -2,27 +2,38 @@ import { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
   const [organizations, setOrganizations] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+
+  const [payment, setPayment] = useState(null);
+
 
 const [selectedOrgId, setSelectedOrgId] = useState("");
 
 const [priority, setPriority] = useState("High");
   useEffect(() => {
     fetchPendingOrganizations();
+
+    const paymentData =
+      JSON.parse(
+        localStorage.getItem("paymentProof")
+      );
+
+    setPayment(paymentData);
   }, []);
 
   const fetchPendingOrganizations = async () => {
     try {
       const token = localStorage.getItem("token");
 
-const res = await fetch(
-  "http://localhost:5001/api/admin/pending",
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const res = await fetch(
+        "http://localhost:5001/api/admin/pending",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await res.json();
       setOrganizations(data);
     } catch (err) {
@@ -59,22 +70,40 @@ const res = await fetch(
   }
 };
 
-  
+  const approveOrganization = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(
+      `http://localhost:5001/api/admin/approve/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-     
+    alert("Organization Approved");
+
+    fetchPendingOrganizations();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const rejectOrganization = async (id) => {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-  `http://localhost:5001/api/admin/reject/${id}`,
-  {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+        `http://localhost:5001/api/admin/reject/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Organization Rejected");
 
@@ -231,6 +260,71 @@ Submit
 </div>
 
 )}
+
+      <h2 className="text-2xl font-semibold mt-10 mb-6">
+          Payment Verification
+      </h2>
+
+      {payment ? (
+        <div className="bg-white rounded-3xl shadow p-6 border">
+
+          <h3 className="text-xl font-bold">
+            Amount : ₹{payment.amount}
+          </h3>
+
+          <p className="mt-2">
+            Status :
+            <span className="font-semibold ml-2">
+              {payment.status}
+            </span>
+          </p>
+
+          <img
+            src={payment.screenshot}
+            alt="Payment Screenshot"
+            className="w-72 rounded-xl mt-5 border"
+          />
+
+          <div className="flex gap-4 mt-6">
+
+            <button
+              onClick={() => {
+                payment.status = "Approved";
+
+                localStorage.setItem(
+                  "paymentProof",
+                  JSON.stringify(payment)
+                );
+
+                setPayment({ ...payment });
+                alert("Payment Approved Successfully");
+              }}
+              className="bg-green-600 text-white px-6 py-2 rounded-xl">
+                Approve
+            </button>
+
+            <button
+              onClick={() => {
+                payment.status = "Rejected";
+
+                localStorage.setItem(
+                  "paymentProof",
+                  JSON.stringify(payment)
+                );
+
+                setPayment({ ...payment });
+                alert("Payment Rejected");
+              }}
+              className="bg-red-500 text-white px-6 py-2 rounded-xl">
+                Reject
+            </button>
+        </div>
+      </div>
+      ) : (
+          <div className="bg-white rounded-2xl p-8 shadow">
+            No payment proofs submitted.
+          </div>
+        )}
     </div>
   );
 };
