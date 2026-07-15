@@ -7,11 +7,19 @@ import DonateFood from "./DonateFood";
 import DonateMoney from "./DonateMoney";
 import HelpSupport from "./HelpSupport";
 import PaymentPage from "./PaymentPage";
+import OrganizationDetails from "./OrganizationDetails";
 
 const DashboardDonor = () => {
 
 const [page,setPage]=useState("dashboard");
 const [organizations, setOrganizations] = useState([]);
+const [selectedOrganization, setSelectedOrganization] = useState(null);
+
+const [search, setSearch] = useState("");
+
+const [location, setLocation] = useState("");
+
+const [sortBy, setSortBy] = useState("priority");
 useEffect(() => {
   fetchOrganizations();
 }, []);
@@ -70,43 +78,26 @@ setPage={setPage}
 
     </h2>
 
-    <div className="grid md:grid-cols-3 gap-4">
+    <div className="grid md:grid-cols-3 gap-4 ">
 
       <input
-        type="text"
-        placeholder="🔍 Search organization"
-        className="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none"
-      />
+type="text"
+placeholder="🔍 Search organization"
+value={search}
+onChange={(e)=>setSearch(e.target.value)}
+className="border rounded-xl px-4 py-3 sm:col-span-2 focus:ring-2 focus:ring-green-500 outline-none"
+/>
 
-      <select className="border rounded-xl px-4 py-3">
+      
 
-        <option>📍 All Locations</option>
-
-        <option>Hyderabad</option>
-
-        <option>Warangal</option>
-
-        <option>Vijayawada</option>
-
-        <option>Visakhapatnam</option>
-
-      </select>
-
-      <select className="border rounded-xl px-4 py-3">
-
-        <option>🍱 All Categories</option>
-
-        <option>Rice</option>
-
-        <option>Meals</option>
-
-        <option>Snacks</option>
-
-        <option>Sweets</option>
-
-        <option>Fruits</option>
-
-      </select>
+      <select
+value={sortBy}
+onChange={(e)=>setSortBy(e.target.value)}
+className="border rounded-xl px-4 py-3"
+>
+<option value="priority">Highest Priority</option>
+<option value="location">Location Wise</option>
+</select>
 
     </div>
 
@@ -138,7 +129,11 @@ setPage={setPage}
   >
 
     <img
-  src={org.photos?.[0] || "/default-org.jpg"}
+  src={
+    org.photos?.length
+      ? `http://localhost:5001/uploads/${org.photos[0]}`
+      : "/default-org.jpg"
+  }
   alt={org.name}
   className="w-full h-56 object-cover"
 />
@@ -167,9 +162,15 @@ setPage={setPage}
           ● Accepting Donations
         </span>
 
-        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl">
-          View Details
-        </button>
+        <button
+  onClick={() => {
+    setSelectedOrganization(org);
+    setPage("details");
+  }}
+  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl"
+>
+  View Details
+</button>
 
       </div>
 
@@ -196,14 +197,29 @@ setPage={setPage}
 
 {page==="profile" && <Profile/>}
 
-{page==="food" && <DonateFood/>}
+{page === "food" && (
+  <DonateFood
+    setPage={setPage}
+    selectedOrganization={selectedOrganization}
+  />
+)}
 
-{page==="money" &&
-   <DonateMoney setPage={setPage}/>
-}
+{page === "money" && (
+  <DonateMoney
+    setPage={setPage}
+    selectedOrganization={selectedOrganization}
+  />
+)}
+
 {page==="support" && <HelpSupport/>}
 {page==="payment" && <PaymentPage />}
-
+{page === "details" && (
+  <OrganizationDetails
+    organization={selectedOrganization}
+    setPage={setPage}
+    setSelectedOrganization={setSelectedOrganization}
+  />
+)}
 </div>
 
 </div>

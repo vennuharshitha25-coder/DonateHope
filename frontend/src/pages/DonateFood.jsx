@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 
-const DonateFood = () => {
+const DonateFood = ({setPage, selectedOrganization}) => {
+  const [photos, setPhotos] = useState([]);
+const [previewImages, setPreviewImages] = useState([]);
   const [formData, setFormData] = useState({
     foodName: "",
     category: "",
@@ -13,20 +15,38 @@ const DonateFood = () => {
     instructions: "",
     photos: [],
   });
-
+  useEffect(() => {
+  if (selectedOrganization) {
+    setFormData((prev) => ({
+      ...prev,
+      organization: selectedOrganization.name,
+    }));
+  }
+}, [selectedOrganization]);
   const handlePhotos = (e) => {
-    const files = Array.from(e.target.files);
+  const files = Array.from(e.target.files);
 
-    if (files.length < 3) {
-      alert("Please upload at least 3 photos.");
-      return;
-    }
+  if (!files.length) return;
 
-    setFormData({
-      ...formData,
-      photos: files,
-    });
-  };
+  if (photos.length + files.length < 3) {
+    alert("Please upload at least 3 food photos.");
+  }
+
+  setPhotos((prev) => [...prev, ...files]);
+
+  setFormData((prev) => ({
+    ...prev,
+    photos: [...prev.photos, ...files],
+  }));
+
+  const newPreviews = files.map((file) => ({
+    id: Date.now() + Math.random(),
+    file,
+    url: URL.createObjectURL(file),
+  }));
+
+  setPreviewImages((prev) => [...prev, ...newPreviews]);
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -121,6 +141,7 @@ const DonateFood = () => {
           <input
             type="datetime-local"
             required
+           
             className="w-full px-4 py-3 rounded-xl border"
             onChange={(e) =>
               setFormData({
@@ -184,27 +205,41 @@ const DonateFood = () => {
 
         {/* Organization */}
 
-        <select
-          required
-          className="w-full px-4 py-3 rounded-xl border"
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              organization: e.target.value,
-            })
-          }
-        >
-          <option value="">Choose Organization</option>
+        
+{selectedOrganization ? (
 
-          <option>Any Organization (Highest Priority)</option>
+  <input
+    type="text"
+    value={selectedOrganization.name}
+    readOnly
+    className="w-full px-4 py-3 rounded-xl border bg-gray-100"
+  />
 
-          <option>Hope Orphanage</option>
+) : (
 
-          <option>Care Foundation</option>
+  <select
+    required
+    className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-green-500"
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        organization: e.target.value,
+      })
+    }
+  >
+    <option value="">Select Organization</option>
 
-          <option>Happy Old Age Home</option>
+    <option>Any Organization (Highest Priority)</option>
 
-        </select>
+    <option>Hope Orphanage</option>
+
+    <option>Care Foundation</option>
+
+    <option>Happy Old Age Home</option>
+
+  </select>
+
+)}
 
         {/* Instructions */}
 
@@ -223,36 +258,110 @@ const DonateFood = () => {
         {/* Photos */}
 
         <div>
+  <label className="block text-lg font-semibold text-gray-700 mb-3">
+    Food Photos
+  </label>
 
-          <label className="font-semibold">
+  <label className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-green-600 rounded-2xl cursor-pointer bg-green-50 hover:bg-green-100 transition">
 
-            Upload Food Photos
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-14 h-14 text-green-600 mb-3"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 16V4"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 8l4-4 4 4"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4 20h16"
+      />
+    </svg>
 
-          </label>
+    <p className="text-lg font-semibold text-green-700">
+      Click to Upload Food Photos
+    </p>
 
-          <input
+    <p className="text-sm text-gray-500 mt-1">
+      PNG, JPG, JPEG (Minimum 3 Photos)
+    </p>
 
-            type="file"
+    <input
+      type="file"
+      multiple
+      required
+      accept="image/*"
+      className="hidden"
+      onChange={handlePhotos}
+    />
+  </label>
+</div>
+{previewImages.length > 0 && (
+  <div className="mt-5">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 
-            multiple
+      {previewImages.map((image) => (
 
-            required
+        <div
+          key={image.id}
+          className="relative rounded-xl overflow-hidden shadow-md border bg-white"
+        >
 
-            accept="image/*"
+          <button
+            type="button"
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 text-sm hover:bg-red-600"
+            onClick={() => {
 
-            className="mt-3"
+              setPreviewImages((prev) =>
+                prev.filter((img) => img.id !== image.id)
+              );
 
-            onChange={handlePhotos}
+              setPhotos((prev) =>
+                prev.filter((file) => file !== image.file)
+              );
 
+              setFormData((prev) => ({
+                ...prev,
+                photos: prev.photos.filter(
+                  (file) => file !== image.file
+                ),
+              }));
+
+            }}
+          >
+            ✕
+          </button>
+
+          <img
+            src={image.url}
+            alt=""
+            className="h-20 w-full object-cover"
           />
 
-          <p className="text-sm text-gray-500 mt-2">
-
-            Upload minimum 3 food photos.
-
-          </p>
+          <div className="p-2">
+            <p className="text-xs truncate">
+              {image.file.name}
+            </p>
+          </div>
 
         </div>
+
+      ))}
+
+    </div>
+  </div>
+)}
 
         {/* Button */}
 

@@ -32,6 +32,15 @@ const userSchema = new mongoose.Schema({
 
   description: { type: String },
 
+
+// Organization Photos
+photos: {
+  type: [String],
+  default: [],
+},
+
+
+
   // 👇 ADD THIS HERE
   approvalStatus: {
     type: String,
@@ -42,6 +51,11 @@ const userSchema = new mongoose.Schema({
         : 'Approved';
     }
   },
+  priority: {
+  type: String,
+  enum: ["High", "Medium", "Low"],
+  default: "Medium",
+},
 
   isAvailable: {
     type: Boolean,

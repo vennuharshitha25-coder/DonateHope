@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { sendWelcomeEmail } from '../utils/sendEmail.js';
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
@@ -38,7 +39,9 @@ console.log("FILES:", req.files);
 console.log("PASSWORD:", req.body.password);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
+    const photoPaths = req.files
+  ? req.files.map(file => file.filename)
+  : [];
     const user = await User.create({
       name,
       email,
@@ -51,6 +54,7 @@ console.log("PASSWORD:", req.body.password);
       designation,
       address,
       city,
+      photos: photoPaths,
       gender,
       occupation,
       description,
@@ -59,7 +63,7 @@ console.log("PASSWORD:", req.body.password);
           ? "Pending"
           : "Approved",
     });
-
+    
     if (role === "organization") {
       return res.status(201).json({
         message:

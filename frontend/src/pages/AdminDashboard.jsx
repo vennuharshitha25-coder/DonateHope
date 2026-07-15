@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
   const [organizations, setOrganizations] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
+const [selectedOrgId, setSelectedOrgId] = useState("");
+
+const [priority, setPriority] = useState("High");
   useEffect(() => {
     fetchPendingOrganizations();
   }, []);
@@ -26,26 +30,38 @@ const res = await fetch(
     }
   };
 
-  const approveOrganization = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-      await fetch(
-  `http://localhost:5001/api/admin/approve/${id}`,
-  {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+ const approveOrganization = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await fetch(
+      `http://localhost:5001/api/admin/approve/${selectedOrgId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          priority,
+        }),
+      }
+    );
+
+    alert("Organization Approved Successfully");
+
+    setShowModal(false);
+
+    fetchPendingOrganizations();
+
+  } catch (err) {
+    console.log(err);
   }
-);
+};
 
-      alert("Organization Approved");
+  
 
-      fetchPendingOrganizations();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+     
 
   const rejectOrganization = async (id) => {
     try {
@@ -140,10 +156,13 @@ const res = await fetch(
               <div className="flex gap-4 mt-6">
 
                 <button
-                  onClick={() => approveOrganization(org._id)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl"
+                  onClick={() => {
+                    setSelectedOrgId(org._id);
+                    setShowModal(true);
+                  }}
+                  className="bg-green-600 text-white px-6 py-2 rounded-xl"
                 >
-                  Approve
+                Approve
                 </button>
 
                 <button
@@ -161,6 +180,57 @@ const res = await fetch(
 
         </div>
       )}
+      {showModal && (
+
+<div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+
+<div className="bg-white rounded-2xl p-8 w-96">
+
+<h2 className="text-2xl font-bold mb-5">
+Assign Priority
+</h2>
+
+<select
+value={priority}
+onChange={(e)=>setPriority(e.target.value)}
+className="w-full border rounded-xl px-4 py-3"
+>
+
+<option>High</option>
+
+<option>Medium</option>
+
+<option>Low</option>
+
+</select>
+
+<div className="flex justify-end gap-4 mt-6">
+
+<button
+onClick={()=>setShowModal(false)}
+className="px-5 py-2 bg-gray-300 rounded-xl"
+>
+
+Cancel
+
+</button>
+
+<button
+onClick={approveOrganization}
+className="px-5 py-2 bg-green-600 text-white rounded-xl"
+>
+
+Submit
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+)}
     </div>
   );
 };

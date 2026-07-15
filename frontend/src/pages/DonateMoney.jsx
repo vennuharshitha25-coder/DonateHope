@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const DonateMoney = ({ setPage }) => {
-  // const [formData, setFormData] = useState({
-  //   amount: "",
-  //   organization: "",
-  //   purpose: "Support Both",
-  //   paymentMethod: "",
-  //   message: "",
-  // });
+const DonateMoney = ({ setPage, selectedOrganization }) => {
+  const [formData, setFormData] = useState({
+    amount: "",
+    organization: "",
+    purpose: "Support Both",
+    paymentMethod: "",
+    message: "",
+  });
+  useEffect(() => {
+  if (selectedOrganization) {
+    setFormData((prev) => ({
+      ...prev,
+      organization: selectedOrganization.name,
+    }));
+  }
+}, [selectedOrganization]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,48 +81,50 @@ const DonateMoney = ({ setPage }) => {
 
         {/* Organization */}
 
-        <div>
+        {selectedOrganization ? (
 
-          <label className="font-semibold block mb-2">
+  <input
+    type="text"
+    value={selectedOrganization.name}
+    readOnly
+    className="w-full px-4 py-3 rounded-xl border bg-gray-100"
+  />
 
-            Donate To
+) : (
 
-          </label>
+  <select
+    required
+    className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-green-500"
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        organization: e.target.value,
+      })
+    }
+  >
+    <option value="">
+      Select Organization
+    </option>
 
-          <select
-            required
-            className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-green-500"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                organization: e.target.value,
-              })
-            }
-          >
+    <option>
+      Any Organization (Highest Priority)
+    </option>
 
-            <option value="">
-              Select Organization
-            </option>
+    <option>
+      Hope Orphanage
+    </option>
 
-            <option>
-              Any Organization (Highest Priority)
-            </option>
+    <option>
+      Care Foundation
+    </option>
 
-            <option>
-              Hope Orphanage
-            </option>
+    <option>
+      Happy Old Age Home
+    </option>
 
-            <option>
-              Care Foundation
-            </option>
+  </select>
 
-            <option>
-              Happy Old Age Home
-            </option>
-
-          </select>
-
-        </div>
+)}
 
         {/* Purpose */}
 

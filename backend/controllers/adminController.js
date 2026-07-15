@@ -17,6 +17,8 @@ export const getPendingOrganizations = async (req, res) => {
 // Approve organization
 export const approveOrganization = async (req, res) => {
   try {
+    const { priority } = req.body;
+
     const organization = await User.findById(req.params.id);
 
     if (!organization) {
@@ -26,6 +28,7 @@ export const approveOrganization = async (req, res) => {
     }
 
     organization.approvalStatus = "Approved";
+    organization.priority = priority;
 
     await organization.save();
 
@@ -39,7 +42,6 @@ export const approveOrganization = async (req, res) => {
     });
   }
 };
-
 // Reject organization
 export const rejectOrganization = async (req, res) => {
 

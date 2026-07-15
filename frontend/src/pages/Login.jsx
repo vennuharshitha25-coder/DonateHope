@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Login = ({ onNavigate }) => {
+  console.log("onNavigate:", onNavigate);
   const { setToken, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
 
