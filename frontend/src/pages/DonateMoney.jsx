@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const DonateMoney = ({ setPage, selectedOrganization }) => {
+  const [organizations, setOrganizations] = useState([]);
   const [formData, setFormData] = useState({
     amount: "",
     organization: "",
