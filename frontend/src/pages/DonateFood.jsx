@@ -221,49 +221,49 @@ body:form
         {/* Organization */}
 
         
-{selectedOrganization ? (
-  <div>
-  <input
-  type="text"
-  value={selectedOrganization.name}
-  readOnly
-  className="w-full px-4 py-3 rounded-xl border bg-gray-100"
-/>
+    {selectedOrganization ? (
+      <div>
+      <input
+      type="text"
+      value={selectedOrganization.name}
+      readOnly
+      className="w-full px-4 py-3 rounded-xl border bg-gray-100"
+    />
 
-<input
-  type="hidden"
-  value={selectedOrganization._id}
-/>
-</div>
+    <input
+      type="hidden"
+      value={selectedOrganization._id}
+    />
+    </div>
 
-) : (
+    ) : (
 
-  <select
-    required
-    className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-green-500"
-    onChange={(e) =>
-      setFormData({
-        ...formData,
-        organization: e.target.value,
-      })
-    }
-  >
+    <select
+      required
+      className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-green-500"
+      onChange={(e) =>
+        setFormData({
+          ...formData,
+          organization: e.target.value,
+        })
+      }
+    >
     <option value="">Select Organization</option>
 
     <option>Any Organization (Highest Priority)</option>
 
     {organizations.map((org) => (
-  <option
-  key={org._id}
-  value={org._id}
->
-  {org.name}
-</option>
-))}
+      <option
+      key={org._id}
+      value={org._id}
+    >
+      {org.name}
+    </option>
+    ))}
 
   </select>
 
-)}
+  )}
 
         {/* Instructions */}
 

@@ -311,216 +311,216 @@ const Profile = () => {
 
       {/* Donation History */}
 
-<div className="bg-white rounded-3xl shadow border p-8">
+      <div className="bg-white rounded-3xl shadow border p-8">
 
-<h2 className="text-2xl font-bold mb-6">
+      <h2 className="text-2xl font-bold mb-6">
 
-Donation History
+      Donation History
 
-</h2>
+      </h2>
 
-<div className="space-y-5">
+      <div className="space-y-5">
 
-<div className="border rounded-xl p-5 flex justify-between">
+      <div className="border rounded-xl p-5 flex justify-between">
 
-<div>
+      <div>
 
-<h3 className="font-semibold">
-Food Donation
-</h3>
+      <h3 className="font-semibold">
+      Food Donation
+      </h3>
 
-<p className="text-gray-500">
-Hope Orphanage
-</p>
+      <p className="text-gray-500">
+      Hope Orphanage
+      </p>
 
-<p className="text-sm text-gray-400">
-12 July 2026
-</p>
+      <p className="text-sm text-gray-400">
+      12 July 2026
+      </p>
 
-</div>
+      </div>
 
-<span className="text-green-600 font-semibold">
+      <span className="text-green-600 font-semibold">
 
-Delivered
+      Delivered
 
-</span>
+      </span>
 
-</div>
+      </div>
 
-<div className="border rounded-xl p-5 flex justify-between">
+      <div className="border rounded-xl p-5 flex justify-between">
 
-<div>
+      <div>
 
-<h3 className="font-semibold">
+      <h3 className="font-semibold">
 
-Money Donation
+      Money Donation
 
-</h3>
+      </h3>
 
-<p className="text-gray-500">
+      <p className="text-gray-500">
 
-Care Foundation
+      Care Foundation
 
-</p>
+      </p>
 
-<p className="text-sm text-gray-400">
+      <p className="text-sm text-gray-400">
 
-₹1000
+      ₹1000
 
-</p>
+      </p>
 
-</div>
+      </div>
 
-<span className="text-green-600 font-semibold">
+      <span className="text-green-600 font-semibold">
 
-Successful
+      Successful
 
-</span>
+      </span>
 
-</div>
+      </div>
 
-</div>
+      </div>
 
-</div>
+      </div>
 
       {/* Settings */}
 
-<div className="bg-white rounded-3xl shadow border p-8">
+    <div className="bg-white rounded-3xl shadow border p-8">
 
-<h2 className="text-2xl font-bold mb-6">
+    <h2 className="text-2xl font-bold mb-6">
 
-Settings
+    Settings
 
-</h2>
+    </h2>
 
-<div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6">
 
-<div className="border rounded-xl p-5">
+    <div className="border rounded-xl p-5">
 
-<h3 className="font-semibold">
-Language
-</h3>
+    <h3 className="font-semibold">
+    Language
+    </h3>
 
-<p className="text-gray-500 mt-2">
+    <p className="text-gray-500 mt-2">
 
-English
+    English
 
-</p>
-
-</div>
-
-<div className="border rounded-xl p-5">
-
-<h3 className="font-semibold">
-Theme
-</h3>
-
-<p className="text-gray-500 mt-2">
-
-Light Green
-
-</p>
-
-</div>
-
-<div className="border rounded-xl p-5">
-
-<h3 className="font-semibold">
-Availability
-</h3>
-
-<p className="text-green-600 mt-2">
-
-Available
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-{/* Bookmarked Organizations */}
-
-<div className="bg-white rounded-3xl shadow border p-8">
-
-<h2 className="text-2xl font-bold mb-6">
-
-Bookmarked Organizations
-
-</h2>
-
-<div className="space-y-4">
-
-<div className="border rounded-xl p-4">
-
-❤️ Hope Foundation
-
-</div>
-
-<div className="border rounded-xl p-4">
-
-❤️ Smile Orphanage
-
-</div>
-
-<div className="border rounded-xl p-4">
-
-❤️ Care NGO
-
-</div>
-
-</div>
-
-</div>
-{/* Feedback */}
-
-<div className="bg-white rounded-3xl shadow border p-8">
-
-<h2 className="text-2xl font-bold mb-6">
-
-Feedback
-
-</h2>
-
-<textarea
-
-rows={4}
-
-placeholder="Share your experience with DonateHope..."
-
-className="w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-green-500"
-/>
-
-<button
-
-className="mt-5 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl">
-
-Submit Feedback
-
-</button>
-
-</div>
-{/* Account */}
-
-<div className="bg-white rounded-3xl shadow border p-8">
-
-<h2 className="text-2xl font-bold text-red-600 mb-6">
-
-Account
-
-</h2>
-
-<button
-  onClick={handleLogout}
-  className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl"
->
-  Logout
-</button>
-
-</div>
+    </p>
 
     </div>
+
+    <div className="border rounded-xl p-5">
+
+    <h3 className="font-semibold">
+    Theme
+    </h3>
+
+    <p className="text-gray-500 mt-2">
+
+    Light Green
+
+    </p>
+
+    </div>
+
+    <div className="border rounded-xl p-5">
+
+    <h3 className="font-semibold">
+    Availability
+    </h3>
+
+    <p className="text-green-600 mt-2">
+
+    Available
+
+    </p>
+
+    </div>
+
+    </div>
+
+    </div>
+    {/* Bookmarked Organizations */}
+
+    <div className="bg-white rounded-3xl shadow border p-8">
+
+    <h2 className="text-2xl font-bold mb-6">
+
+    Bookmarked Organizations
+
+    </h2>
+
+    <div className="space-y-4">
+
+    <div className="border rounded-xl p-4">
+
+    ❤️ Hope Foundation
+
+    </div>
+
+    <div className="border rounded-xl p-4">
+
+    ❤️ Smile Orphanage
+
+    </div>
+
+    <div className="border rounded-xl p-4">
+
+    ❤️ Care NGO
+
+    </div>
+
+    </div>
+
+    </div>
+    {/* Feedback */}
+
+    <div className="bg-white rounded-3xl shadow border p-8">
+
+    <h2 className="text-2xl font-bold mb-6">
+
+    Feedback
+
+    </h2>
+
+    <textarea
+
+    rows={4}
+
+    placeholder="Share your experience with DonateHope..."
+
+    className="w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-green-500"
+    />
+
+    <button
+
+    className="mt-5 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl">
+
+    Submit Feedback
+
+    </button>
+
+    </div>
+    {/* Account */}
+
+    <div className="bg-white rounded-3xl shadow border p-8">
+
+    <h2 className="text-2xl font-bold text-red-600 mb-6">
+
+    Account
+
+    </h2>
+
+    <button
+      onClick={handleLogout}
+      className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl"
+    >
+      Logout
+    </button>
+
+    </div>
+
+        </div>
   );
 };
 

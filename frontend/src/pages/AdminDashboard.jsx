@@ -133,7 +133,57 @@ const fetchDonations = async () => {
       console.log(err);
     }
   };
+  const verifyDonation = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
 
+    await fetch(
+      `http://localhost:5001/api/donations/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: "Waiting Organization",
+        }),
+      }
+    );
+
+    alert("Donation Verified Successfully");
+
+    fetchDonations();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const rejectDonation = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await fetch(
+      `http://localhost:5001/api/donations/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: "Rejected",
+        }),
+      }
+    );
+
+    alert("Donation Rejected");
+
+    fetchDonations();
+  } catch (err) {
+    console.log(err);
+  }
+};
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
 
@@ -402,13 +452,19 @@ Submit
       />
 
       <div className="flex gap-4 mt-5">
-        <button className="bg-green-600 text-white px-5 py-2 rounded-xl">
-          Verify
-        </button>
+        <button
+        onClick={() => verifyDonation(item._id)}
+        className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl"
+      >
+        Verify
+      </button>
 
-        <button className="bg-red-500 text-white px-5 py-2 rounded-xl">
-          Reject
-        </button>
+      <button
+        onClick={() => rejectDonation(item._id)}
+        className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl"
+      >
+        Reject
+      </button>
       </div>
     </div>
   ))

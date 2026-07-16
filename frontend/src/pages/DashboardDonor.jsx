@@ -105,28 +105,28 @@ setPage={setPage}
     <div className="grid md:grid-cols-3 gap-4 ">
 
       <input
-  type="text"
-  placeholder="🔍 Search Organization"
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="border rounded-xl px-4 py-3 sm:col-span-2 focus:ring-2 focus:ring-green-500 outline-none"
-/>
+        type="text"
+        placeholder="🔍 Search Organization"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border rounded-xl px-4 py-3 sm:col-span-2 focus:ring-2 focus:ring-green-500 outline-none"
+      />
 
       
 
       <select
-  value={sortBy}
-  onChange={(e) => setSortBy(e.target.value)}
-  className="border rounded-xl px-4 py-3"
->
-  <option value="priority">
-    Highest Priority
-  </option>
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+        className="border rounded-xl px-4 py-3"
+      >
+        <option value="priority">
+          Highest Priority
+        </option>
 
-  <option value="location">
-    Location Wise
-  </option>
-</select>
+        <option value="location">
+          Location Wise
+        </option>
+      </select>
 
     </div>
 
@@ -141,20 +141,20 @@ setPage={setPage}
 
       {filteredOrganizations.map((org) => (
 
-  <div
-    key={org._id}
-    className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden"
-  >
+        <div
+          key={org._id}
+          className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden"
+        >
 
-    <img
-  src={
-    org.photos?.length
-      ? `http://localhost:5001/uploads/${org.photos[0]}`
-      : "/default-org.jpg"
-  }
-  alt={org.name}
-  className="w-full h-56 object-cover"
-/>
+          <img
+        src={
+          org.photos?.length
+            ? `http://localhost:5001/uploads/${org.photos[0]}`
+            : "/default-org.jpg"
+        }
+        alt={org.name}
+        className="w-full h-56 object-cover"
+      />
 
     <div className="p-6">
 
@@ -214,13 +214,6 @@ setPage={setPage}
   </div>
 
 ))}
-
-        
-
-        
-
-      
-
   </div>
 
 </div>

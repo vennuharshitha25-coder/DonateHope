@@ -6,7 +6,7 @@ const DashboardOrg = () => {
   const [donations, setDonations] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5001/api/donations/org', {
+   fetch('http://localhost:5001/api/donations/organization', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => res.json())
@@ -37,28 +37,58 @@ const DashboardOrg = () => {
               <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 font-bold">
                 <th className="p-3">Donor</th>
                 <th className="p-3">Details</th>
-                <th className="p-3">Current Pipeline Status</th>
-                <th className="p-3">Actions</th>
+                <th className="p-3">Status</th>
+<th className="p-3">Photo</th>
+<th className="p-3">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {donations.map((d) => (
                 <tr key={d._id} className="hover:bg-gray-50/50">
                   <td className="p-3 font-medium">{d.donor?.name || 'Anonymous'}</td>
-                  <td className="p-3">{d.type === 'Food' ? `${d.foodDetails?.items} (Qty: ${d.foodDetails?.quantity})` : 'Money Asset'}</td>
+                  <td className="p-3">
+                    <p><b>Food Name:</b> {d.foodName}</p>
+                    <p><b>Category:</b> {d.category}</p>
+                    <p><b>Quantity:</b> {d.quantity}</p>
+                    <p><b>Delivery:</b> {d.deliveryMethod}</p>
+                    <p><b>Occasion:</b> {d.occasion || "N/A"}</p>
+                    <p><b>Instructions:</b> {d.instructions || "None"}</p>
+                  </td>
                   <td className="p-3"><span className="px-2.5 py-1 text-xs font-bold rounded-full bg-yellow-100 text-yellow-800">{d.status}</span></td>
-                  <td className="p-3 space-x-2">
-                    {d.status === 'Pending' && (
-                      <>
-                        <button onClick={() => handleAction(d._id, 'Accepted')} className="bg-brand-primary text-white text-xs px-3 py-1.5 rounded-lg font-bold">Accept</button>
-                        <button onClick={() => handleAction(d._id, 'Rejected')} className="bg-red-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold">Reject</button>
-                      </>
+                  <td className="p-3">
+                    {d.photos?.length > 0 ? (
+                      <img
+                        src={`http://localhost:5001/uploads/${d.photos[0]}`}
+                        alt="Food"
+                        className="w-24 h-24 rounded-lg object-cover"
+                      />
+                    ) : (
+                      <span>No Photo</span>
                     )}
+                  </td>
+                  <td className="p-3 space-x-2">
+                    {d.status === "Waiting Organization" && (
+  <>
+    <button
+      onClick={() => handleAction(d._id, "Accepted")}
+      className="bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"
+    >
+      Accept
+    </button>
+
+    <button
+      onClick={() => handleAction(d._id, "Rejected")}
+      className="bg-red-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold"
+    >
+      Reject
+    </button>
+  </>
+)}
                   </td>
                 </tr>
               ))}
               {donations.length === 0 && (
-                <tr><td colSpan="4" className="text-center p-6 text-gray-400">No incoming dynamic donations recorded yet.</td></tr>
+                <tr><td colSpan="5" className="text-center p-6 text-gray-400">No incoming dynamic donations recorded yet.</td></tr>
               )}
             </tbody>
           </table>

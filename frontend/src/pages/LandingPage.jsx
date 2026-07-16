@@ -43,12 +43,6 @@ const LandingPage = ({ onNavigate }) => {
 
       </div>
 
-      {/* Statistics */}
-      
-
-        
-      
-
     </div>
   );
 };

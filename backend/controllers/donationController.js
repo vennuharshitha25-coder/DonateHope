@@ -12,6 +12,7 @@ export const createDonation = async (req, res) => {
       category: req.body.category,
       quantity: req.body.quantity,
       occasion: req.body.occasion,
+      deliveryMethod: req.body.deliveryMethod,
       instructions: req.body.instructions,
 
       photos: req.files
@@ -46,18 +47,42 @@ export const getPendingDonations = async (req, res) => {
 };
 export const getOrgDonations = async (req, res) => {
   try {
-    const donations = await Donation.find({ organization: req.user.id }).populate('donor', 'name email phone');
+    const donations = await Donation.find({
+      organization: req.user._id,
+      status: "Waiting Organization",
+    })
+      .populate("donor", "name phone email");
+
     res.json(donations);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
 export const updateDonationStatus = async (req, res) => {
   try {
-    const donation = await Donation.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
-    res.json(donation);
+    const donation = await Donation.findById(req.params.id);
+
+    if (!donation) {
+      return res.status(404).json({
+        message: "Donation not found",
+      });
+    }
+
+    donation.status = req.body.status;
+
+    await donation.save();
+
+    res.json({
+      message: "Donation updated successfully",
+      donation,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };

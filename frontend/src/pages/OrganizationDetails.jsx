@@ -107,24 +107,24 @@ const OrganizationDetails = ({ organization, setPage, setSelectedOrganization })
 
 
          <button
-  onClick={() => {
-  setSelectedOrganization(organization);
-  setPage("food");
-}}
-className="bg-green-600 text-white px-6 py-3 rounded-xl"
->
-  Donate Food
-</button>
+            onClick={() => {
+            setSelectedOrganization(organization);
+            setPage("food");
+          }}
+          className="bg-green-600 text-white px-6 py-3 rounded-xl"
+          >
+            Donate Food
+          </button>
 
           <button
-  onClick={() => {
-  setSelectedOrganization(organization);
-  setPage("money");
-}}
-className="bg-green-600 text-white px-6 py-3 rounded-xl"
->
-  Donate Money
-</button>
+            onClick={() => {
+            setSelectedOrganization(organization);
+            setPage("money");
+          }}
+          className="bg-green-600 text-white px-6 py-3 rounded-xl"
+          >
+            Donate Money
+          </button>
 
           <button
             onClick={() => setPage("dashboard")}

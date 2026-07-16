@@ -11,7 +11,19 @@ import {
 const router = express.Router();
 
 // routes...
+// Organization Dashboard
+router.get(
+  "/organization",
+  protect,
+  getOrgDonations
+);
 
+// Organization Accept/Reject
+router.put(
+  "/:id",
+  protect,
+  updateDonationStatus
+);
 // Donor submits donation
 router.post(
   "/",
@@ -27,5 +39,10 @@ router.get(
   adminOnly,
   getPendingDonations
 );
-
+router.put(
+  "/:id",
+  protect,
+  adminOnly,
+  updateDonationStatus
+);
 export default router;
